@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利用規約</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .terms {
+            margin-bottom: 20px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-right: 10px;
+            position: relative;
+        }
+
+        .checkbox span {
+            font-size: 16px;
+            display: none;
+        }
+
+        .checkbox.loading {
+            border: 2px solid #00f;
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .checked {
+            border-color: #00f;
+            background-color: #00f;
+        }
+
+        .checked span {
+            display: block;
+            color: white;
+        }
+
+        #confirmButton {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: none; /* 最初は非表示 */
+        }
+
+        #confirmButton:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>利用規約</h1>
+    <div class="terms">
+        <p>このサイトを使用してYouTube動画をダウンロードする場合、ダウンロードしたコンテンツは私的な利用に限られます。</p>
+        <p>商業的な目的や利益を得るためにダウンロードコンテンツを使用することは一切禁止されています。</p>
+        <p>また、YouTubeの利用規約に違反しないように、適切な範囲での利用を心がけてください。</p>
+        <p>ダウンロードした動画は個人使用であり、他者に販売、再配布、または公共の場での利用は許されません。</p>
+    </div>
+
+    <div class="checkbox-container">
+        <div id="customCheckbox" class="checkbox">
+            <span>✔️</span>
+        </div>
+        <label for="customCheckbox">利用規約に同意しました</label>
+    </div>
+
+    <button id="confirmButton" disabled>確認しました</button>
+
+    <script>
+        const checkbox = document.getElementById("customCheckbox");
+        const confirmButton = document.getElementById("confirmButton");
+
+        let isChecked = false;
+
+        checkbox.addEventListener("click", function() {
+            if (!isChecked) {
+                // チェックボックスがクリックされたら、「くるくる」アニメーションを開始
+                checkbox.classList.add("loading");
+
+                // 1秒後にチェックマークを表示し、アニメーションを終了
+                setTimeout(() => {
+                    checkbox.classList.remove("loading");
+                    checkbox.classList.add("checked");
+                    isChecked = true;
+                    confirmButton.disabled = false; // 確認ボタンを有効化
+                    confirmButton.style.display = "block"; // ボタンを表示
+                }, 1000);
+            }
+        });
+
+        confirmButton.addEventListener("click", function() {
+            window.location.href = "/download"; // /download へ移動
+        });
+    </script>
+
+</body>
+</html>

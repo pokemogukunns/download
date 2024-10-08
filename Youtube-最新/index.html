@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Downloader</title>
+</head>
+<body>
+    <h1>YouTube Video Downloader</h1>
+    
+    <!-- ユーザーがYouTubeリンクを入力するフォーム -->
+    <form id="downloadForm">
+        <label for="youtubeLink">Enter YouTube Link:</label>
+        <input type="text" id="youtubeLink" name="youtubeLink" required>
+        <button type="submit">Download Video</button>
+    </form>
+
+    <script>
+        // フォームの送信を監視し、ユーザー入力からYouTubeリンクを処理
+        document.getElementById('downloadForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // フォームのデフォルト送信を防ぐ
+            var youtubeLink = document.getElementById('youtubeLink').value;
+
+            // YouTubeの動画ページに遷移
+            window.open(youtubeLink, '_blank'); // 新しいタブで動画ページを開く
+
+            // しばらく待ってから元のコードを実行（遷移先のページでの実行を想定）
+            setTimeout(function() {
+                // 既存のJavaScriptコードを実行
+                (function(d) {
+                    var url = ytInitialPlayerResponse.streamingData.formats[0].url;
+                    var title = ytInitialPlayerResponse.videoDetails.title;
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', url, true);
+                    xhr.responseType = 'blob';
+                    xhr.onload = function(){
+                        var a = d.createElement('a'), blob = xhr.response;
+                        a.download = title;
+                        a.rel = 'noopener';
+                        a.href = URL.createObjectURL(blob);
+                        setTimeout(function(){ URL.revokeObjectURL(a.href) }, 4E4);
+                        setTimeout(function(){ a.click() }, 0);
+                    };
+                    xhr.onerror = function(){
+                        console.error('could not download file');
+                    };
+                    xhr.send();
+                })(document);
+            }, 2000); // 2秒待ってからダウンロードを実行
+        });
+    </script>
+</body>
+</html>
